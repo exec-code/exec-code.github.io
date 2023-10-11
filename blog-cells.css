@@ -1,0 +1,132 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css");
+
+.cell-editor {
+  font-family: monospace;
+  font-weight: 400;
+
+  border: none;
+  height: auto;
+  color-scheme: dark;
+
+  font-size: 14px;
+  line-height: 1.45em;
+
+  box-shadow: 0 0 5px 1px #000000c6;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  background: black;
+
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.snippet-output {
+  font-size: 14px;
+  line-height: 1.45em;
+
+  border-style: none;
+  border-radius: 0px;
+  margin: 0px;
+  color: white;
+  background-color: black;
+  max-height: 300px;
+  padding: 10px 20px;
+  color-scheme: dark;
+
+  overflow: auto;
+}
+
+/* Log Line Colors */
+.output-log {
+  color: white;
+}
+.output-error {
+  color: red;
+}
+.output-warn {
+  color: yellow;
+}
+
+.run-bar {
+  text-align: center;
+  transition: color 0.2s ease 0s, background-color 0.2s ease 0s;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  font-family: monospace;
+  font-weight: 400;
+  font-size: 14px;
+  height: 2.5em;
+}
+.run-bar-ready {
+  background-color: #044a10;
+  color: #6cd97e;
+  cursor: pointer;
+}
+.run-bar-ready:hover {
+  color: white;
+  background-color: rgb(0, 145, 24);
+}
+.run-bar-running {
+  background-color: #3477eb;
+  color: #6cd97e;
+}
+
+.cell-header {
+  text-align: center;
+
+  color: #6cd97e;
+  cursor: pointer;
+
+  background-color: #044a10;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  font-family: monospace;
+  font-weight: 400;
+
+  font-size: 14px;
+  height: 2.5em;
+
+  transition: color 0.2s ease 0s, background-color 0.2s ease 0s;
+}
+.cell-header:hover {
+  color: white;
+  background-color: rgb(0, 145, 24);
+}
+
+.cm-editor {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+script[type="text/notebook-cell"] {
+  display: block;
+  white-space: pre;
+
+  background-color: rgb(40, 44, 52);
+  color: rgb(171, 178, 191);
+  padding: 10px;
+
+  font-family: monospace;
+
+  font-size: 14px;
+  line-height: 1.45em;
+
+  overflow-x: auto;
+
+  box-shadow: 0 0 5px 1px #000000c6;
+  border-radius: 4px;
+
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
