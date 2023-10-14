@@ -24264,38 +24264,42 @@
             }
         }
 
+        /** START CUSTOM SCRIPT */
         function processBlogCell(blogcellElement) {
+            // ORIGINAL CODE REFERENCES
             const reactFragment = Al;
             const blogcellClass = th;
+
+            // TRANSFER <SCRIPT> TO RUNNING CODE
             const dataset = blogcellElement.dataset;
             const code = blogcellElement.textContent?.trim() || "";
             const div = document.createElement("div");
-            blogcellElement.after(div),
-                zl.s(div).render(reactFragment.createElement(blogcellClass, {
-                    code: code,
-                    autoRun: "true" === dataset.autorun,
-                    hideable: "true" === dataset.hidden,
-                    kernel: Jc.get(dataset.kernel || "javascript"),
-                    onMount: () => {
-                        blogcellElement.remove()
-                    }
-                }))
+            blogcellElement.after(div);
+            zl.s(div).render(reactFragment.createElement(blogcellClass, {
+                code: code,
+                autoRun: "true" === dataset.autorun,
+                hideable: "true" === dataset.hidden,
+                kernel: Jc.get(dataset.kernel || "javascript"),
+                onMount: () => {
+                    blogcellElement.remove()
+                }
+            }))
         }
+        // STORE FUNCTION ON GLOBAL VARIABLE BlogCell
         i.processBlogCell = processBlogCell;
-
-        function processAllBlogCells() {
-            const e = document.querySelectorAll("script[type='text/notebook-cell'], pre.notebook-cell");
-            for (const t of e) {
-                processBlogCell(t);
-            }
-        }
 
         new Promise((e => {
             document.addEventListener("DOMContentLoaded", (() => e()))
         }
         )).then((() => {
-            processAllBlogCells()
+            // process EXISTING definition on DOMContentLoaded
+            const e = document.querySelectorAll("script[type='text/notebook-cell'], pre.notebook-cell");
+            for (const t of e) {
+                processBlogCell(t);
+            }
         }))
+                /** END CUSTOM SCRIPT */
+
     }
     )(),
         window.BlogCells = i
