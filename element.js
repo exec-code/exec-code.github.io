@@ -1,6 +1,7 @@
 // immediatly create a { } scope so no code from this file leaks to global Scope
 {
-  // This <exec-code> Web Component uses the BlogCells library
+  // This <exec-code></exec-code> Web Component uses the BlogCells library
+  // https://github.com/rameshvarun/blog-cells
   // if that library is not loaded yet, it will be loaded automatically
 
   // source for Blog Cells library
@@ -10,7 +11,7 @@
   const createElement = (tag, props = {}) => Object.assign(document.createElement(tag), props);
 
 /*
-  define <exec-code> Web Component
+  define <exec-code></exec-code> Web Component
  
   attributes:
   autorun: run code block on load
@@ -37,7 +38,7 @@
         // after 1 millisecond so <exec-code> innerHTML is parsed
         setTimeout(initExecCodeComponent, 1);
       } else {
-      // if blog-cell is not loaded yet, load CSS and JS files and init this <exec-code> Web Component
+      // if blog-cell is not loaded yet, load CSS and JS files and init this <exec-code></exec-code> Web Component
         document.body.append(
           createElement("link", {
             rel: "stylesheet",
@@ -116,5 +117,5 @@
       if (outputerror) return outputerror.innerHTML;
       else return false;
     }
-  })
+  });
 }

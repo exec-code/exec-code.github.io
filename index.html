@@ -1,163 +1,18 @@
-// Learning Objectives:
-// console log
-// numbers
-// strings
-// functions
-// arrays
-// objects
-// DOM
-// Events
-
 <script src="./element.js"></script>
-<style>
-    .cm-content {
-        user-select: none;
-        xxdisplay: none;
-    }
-</style>
-<pre>Een twee drie vier, hoedje van, hoedje van,
-Een twee drie vier, hoedje van papier.
-Heb je dan geen hoedje meer
-Maak er een van bordpapier
-Een twee drie vier, hoedje van papier.
-Een twee drie vier, hoedje van, hoedje van,
-Een twee drie vier, hoedje van papier.
-Als het hoedje dan niet past,
-Zet het in de glazenkast.
-Een twee drie vier, hoedje van papier.</pre>
 <exec-code autorun autoupdate runcode="2" editable>
     <template>
-        <let firstName="Tijn"></let>
-        <let lastName="Gort"></let>
         <code locked>
-function cijfers(aantal=4, start=0){
-    return [1,2,3,4,5,6,7,8,9].slice(start,aantal);
-}
-console.log(cijfers(5));
+let firstName = "Steve";
+let lastName = "Wozniak";
+console.log( firstName, lastName );
         </code>
         <code>
-      let beatles = ["John", "Paul", "George", "Ringo"];
-      console.log("Alle Beatles:", beatles);
-      console.log("Beatle 1 =", beatles[0]);
-      console.log("Beatle 2 =", beatles[1]);
-      console.log("Beatle 3 =", beatles[2]);
-      console.log("Beatle 4 =", beatles[3]);
+        let beatles = ["John", "Paul", "George", "Ringo"];
+console.log("All Beatles:", beatles);
+console.log("Beatle 1 =", beatles[0]);
+console.log("Beatle 2 =", beatles[1]);
+console.log("Beatle 3 =", beatles[2]);
+console.log("Beatle 4 =", beatles[3]);
         </code>
-        <code>
-      console.log( 1, 2, 3, 4 );
-      console.log( 1 + 2 + 3 + 4 );
-        </code>
-        <code>
-      console.log( 1 2 3 4 );
-        </code>
-        <code>
-      console.log( een );
-        </code>
-        <code>
-      function 1234(){
-      return "1 2 3 4";
-      }
-        </code>
-        <code>
-      function digits(){
-      return "1, 2, 3, 4";
-      }
-      console.log(digits)
-      console.log(digits())
-        </code>
-        <code>
-      function digits(){
-      return "1, 2, 3, 4";
-      }
-      function logdigits(){
-      console.log(digits())
-      }
-      logdigits()
-        </code>
-        <code>
-      console.log(1, 2, 3, 4);
-      console.log("hoedje van");
-      console.log("hoedje van");
-      console.log(1, 2, 3, 4);
-      console.log("hoedje van papier");
-        </code>
-        <code>
-      console.log( "firstName" , "lastName" );
-        </code>
-        <code>
-      console.log( "firstName" , "lastName" );
-      console.log( 'firstName' , 'lastName' );
-      console.log( `firstName` , `lastName` );
-        </code>
-        <code>
-      let firstName = "Tijn";
-      let lastName = "Gort";
-      console.log( firstName, lastName );
-        </code>
-        <question>
-            <answer correct>
-                <feedback>
-                    FEEDBACK ANSWER
-                </feedback>
-            </answer>
-            <feedback>
-                GENERIC FEEDBACK #1
-            </feedback>
-            <feedback>
-                GENERIC FEEDBACK #2
-            </feedback>
-        </question>
     </template>
 </exec-code>
-
-<script>
-    const createElement = (tag, props = {}) => Object.assign(document.createElement(tag), props);
-
-    function indentJSCode(jsCode, indentSize = 4) {
-        const lines = jsCode.split('\n');
-        let indentLevel = 0;
-        const indentString = ' '.repeat(indentSize);
-        return lines.map(line => {
-            if (line.includes('}') || line.includes(']')) indentLevel--;
-            const indentedLine = indentString.repeat(indentLevel) + line.trim();
-            if (line.includes('{') || line.includes('[')) indentLevel++;
-            return indentedLine;
-        }).join('\n');
-    }
-
-    let questions = [{
-        question: "",
-        code: [""],
-        answer: "",
-        feedback: [""]
-    }];
-
-    questions.map(({
-        question,
-        code,
-        answer
-    }) => {
-        return createElement("exec-code", {
-
-        })
-    })
-</script>
-
-<script>
-    /*   class JSONFormatKernel extends BlogCells.Kernel {
-      async run(code, onOutput) {
-        const data = JSON.parse(code.trim());
-        onOutput({
-          type: "log",
-          line: JSON.stringify(data, undefined, 2)
-        });
-      }
-    }
-    console.dir(new JSONFormatKernel());
-    BlogCells.registerKernel("json-format", () => new JSONFormatKernel());
-     */
-</script>
-<!-- <script type="text/notebook-cell" data-kernel="json-format">
-  [4, {"hello": 3}]
-</script>
- -->
