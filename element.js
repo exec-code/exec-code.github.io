@@ -10,23 +10,23 @@
   // generic createElement function
   const createElement = (tag, props = {}) => Object.assign(document.createElement(tag), props);
 
-/*
-  define <exec-code></exec-code> Web Component
- 
-  attributes:
-  autorun: run code block on load
-  runcode: run code block #NR
-  autoupdate: run code block on keyup
-*/
+  /*
+    define <exec-code></exec-code> Web Component
+   
+    attributes:
+    autorun: run code block on load
+    runcode: run code block #NR
+    autoupdate: run code block on keyup
+  */
   customElements.define("exec-code", class extends HTMLElement {
     get runcode() {
       // if attribute=NR exists on <exec-code> then run code block #NR
-      return ~~this.getAttribute("runcode");
+      return ~~(this.getAttribute("runcode") || 1);
     }
     connectedCallback() {
       // URL to BlogCells
       // function init <exec-code> Web Component
-      const initExecCodeComponent = () => {
+      /* function */ const initExecCodeComponent = () => {
         this.content = this.querySelector("template").content;
         if (this.content)
           this.renderCodeBlock(this.runcode);
@@ -38,7 +38,7 @@
         // after 1 millisecond so <exec-code> innerHTML is parsed
         setTimeout(initExecCodeComponent, 1);
       } else {
-      // if blog-cell is not loaded yet, load CSS and JS files and init this <exec-code></exec-code> Web Component
+        // if blog-cell is not loaded yet, load CSS and JS files and init this <exec-code></exec-code> Web Component
         document.body.append(
           createElement("link", {
             rel: "stylesheet",
@@ -57,7 +57,8 @@
       if (this.code) {
         this.setscript(this.code.innerHTML);
       } else {
-        console.error("Missing <code> in", this, "with selector", selector);
+        console.error(`Missing <code block #${codenr}> in:`, this, "\nNow executing previous <code> block",);
+        if (codenr > 1) this.renderCodeBlock(codenr - 1);
       }
     }
     // (un)lock code block so user can (not) edit it
@@ -94,23 +95,44 @@
     afterinit() {
       this.locked = this.code && this.code.hasAttribute("locked");
     }
-    appendscript(txt, autorun = true) {
-      return this.appendChild(
+
+    // number of characters indentation
+    get indent(){
+      return this.getAttribute("indent") || 4;
+    }
+    appendscript(innerHTML, autorun = true) {
+      console.warn(21, this.querySelector("#newscript"));
+      if (!this.hasAttribute("autoindent")) {
+        innerHTML = indentJSCode(innerHTML,this.indent);
+      }
+      console.log(innerHTML.split("\n    "))
+      let newscript = this.appendChild(
         createElement("script", {
+          id: "newscript",
           type: "text/notebook-cell", // not required
-          innerHTML: txt
-          //indentJSCode(txt),
+          innerHTML
         })
       );
+      return newscript;
     }
     afterrun() {
-      console.warn("afterrun", this.outputerror)
+      let cellEditors = this.querySelectorAll(".cell-editor");
+      console.warn("afterrun");
+      if (cellEditors.length > 1) {
+        console.warn("BlogCells created more than 1 .cell-editor");
+        cellEditors[0].remove();
+      }
     }
     run() {
-      this.querySelector(".run-bar").click();
-      setTimeout(() => {
-        this.afterrun();
-      }, 500);
+      let runbar = this.querySelector(".run-bar");
+      if (runbar) {
+        runbar.click();
+        setTimeout(() => {
+          this.afterrun();
+        }, 500);
+      } else {
+        console.error("Missing .run-bar");
+      }
     }
     get outputerror() {
       let outputerror = this.querySelector(".output-error");
@@ -118,4 +140,24 @@
       else return false;
     }
   });
+
+
+  // indent JavaScript code
+  function indentJSCode(jsCode, indentSize = 4) {
+    let lines = jsCode.split('\n');
+    let indentLevel = 0;
+    let indentString = ' '.repeat(indentSize);
+    return lines.map(line => {
+      if (line.includes('}')
+        //|| line.includes(']')
+      ) indentLevel--;
+      if (indentLevel < 0) indentLevel = 0;
+      let indentedLine = indentString.repeat(indentLevel) + line.trim();
+      if (line.includes('{')
+        //|| line.includes('[')
+      ) indentLevel++;
+      return indentedLine;
+    }).join('\n');
+  }
+
 }
