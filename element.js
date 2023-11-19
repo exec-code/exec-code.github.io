@@ -19,6 +19,15 @@
     autoupdate: run code block on keyup
   */
   customElements.define("exec-code", class extends HTMLElement {
+    static get observedAttributes() {
+      return ["autorun", "runcode", "autoupdate"];
+    }
+    attributesChangedCallback(name, oldValue, newValue) {
+      if (this.hasAttribute("autorun")) this.run();
+      if (this.hasAttribute("autoupdate")) this.onkeyup = () => this.run();
+      else delete this.onkeyup
+      if (this.hasAttribute("runcode")) this.renderCodeBlock(this.runcode);
+    }
     get runcode() {
       // if attribute=NR exists on <exec-code> then run code block #NR
       return ~~(this.getAttribute("runcode") || 1);
@@ -51,11 +60,18 @@
         )
       }
     }
+    get code() {
+      if (this.codeElement)
+        return this.codeElement.innerHTML;
+      else return "";
+    }
     renderCodeBlock(codenr = 1) {
       let selector = typeof codenr === "string" ? codenr : `code:nth-of-type(${codenr})`;
-      this.code = this.content.querySelector(selector);
-      if (this.code) {
-        this.setscript(this.code.innerHTML);
+      this.codeElement = this.content.querySelector(selector);
+      if (this.codeElement) {
+        setTimeout(() => {
+          this.setscript(this.code);
+        }, 250); //! need a delay here for BlogCells to work correctly
       } else {
         console.error(`Missing <code block #${codenr}> in:`, this, "\nNow executing previous <code> block",);
         if (codenr > 1) this.renderCodeBlock(codenr - 1);
@@ -81,7 +97,7 @@
         ).join("\n");
     }
     setscript(txt) {
-      if (BlogCells) {
+      if (window.BlogCells) {
         let lines = this.extractscript(txt);
         let script = this.appendscript(lines);
         BlogCells.processBlogCell(script);
@@ -93,46 +109,50 @@
       }
     }
     afterinit() {
-      this.locked = this.code && this.code.hasAttribute("locked");
+      this.locked = this.codeElement && this.codeElement.hasAttribute("locked");
     }
 
     // number of characters indentation
-    get indent(){
+    get indent() {
       return this.getAttribute("indent") || 4;
     }
     appendscript(innerHTML, autorun = true) {
-      console.warn(21, this.querySelector("#newscript"));
-      if (!this.hasAttribute("autoindent")) {
-        innerHTML = indentJSCode(innerHTML,this.indent);
+      if (!this.hasAttribute("htmlindent")) {
+        innerHTML = indentJSCode(innerHTML, this.indent);
       }
-      console.log(innerHTML.split("\n    "))
-      let newscript = this.appendChild(
+      let newBlogCellsScript = this.appendChild(
         createElement("script", {
-          id: "newscript",
           type: "text/notebook-cell", // not required
           innerHTML
         })
       );
-      return newscript;
+      return newBlogCellsScript;
     }
     afterrun() {
       let cellEditors = this.querySelectorAll(".cell-editor");
-      console.warn("afterrun");
       if (cellEditors.length > 1) {
         console.warn("BlogCells created more than 1 .cell-editor");
         cellEditors[0].remove();
       }
     }
     run() {
+      const clickRunBar = () => {
+        runbar.click();
+        setTimeout(() => this.afterrun(), 500);
+      };
       let runbar = this.querySelector(".run-bar");
       if (runbar) {
-        runbar.click();
-        setTimeout(() => {
-          this.afterrun();
-        }, 500);
+        clickRunBar();
       } else {
-        console.error("Missing .run-bar");
+        console.warn("Missing .run-bar");
+        setTimeout(() => this.run());
       }
+    }
+    // GETTERS and SETTERS
+    get output() {
+      let output = this.querySelector(".snippet-output");
+      if (output) return output.innerText;
+      else return false;
     }
     get outputerror() {
       let outputerror = this.querySelector(".output-error");
@@ -142,7 +162,7 @@
   });
 
 
-  // indent JavaScript code
+  // indent JavaScript code, on loading this script the function will be 'hoisted' to the top of the page by the JS compiler, so all code following it will be executed correctly
   function indentJSCode(jsCode, indentSize = 4) {
     let lines = jsCode.split('\n');
     let indentLevel = 0;

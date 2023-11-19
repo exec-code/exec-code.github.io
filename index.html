@@ -1,17 +1,107 @@
-<script src="./element.js"></script>
+<html>
 
-<exec-code autorun autoupdate runcode="2" editable>
-    <template>
-        <code>
-        let beatles = ["John", "Paul", "George", "Ringo"];
-        function foo() {
-            return "bar";
+<head>
+    <title>exec-code Web Component</title>
+    <script src="./element.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
         }
-        console.log("All Beatles:", beatles);
-        console.log("Beatle 1 =", beatles[0]);
-        console.log("Beatle 2 =", beatles[1]);
-        console.log("Beatle 3 =", beatles[2]);
-        console.log("Beatle 4 =", beatles[3]);
+
+        section {
+            margin-left: 2em;
+        }
+
+        .documentation {
+            xbackground-color: #eee;
+            xpadding: 10px;
+            xborder-radius: 5px;
+            xborder: 1px solid #ccc;
+            font-size: 1.5em;
+        }
+
+        pre.documentation {
+            margin-bottom: .5em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>&lt;exec-code> Web Component</h1>
+    <h2>Usage and Attributes</h2>
+    <section>
+
+        <pre class="documentation">
+// load &lt;exec-code> Web Component
+&lt;script src="https://exec-code.github.io/element.js"></script>
+        </pre>
+        <pre class="documentation">// Use Web Component
+&lt;exec-code>
+    &lt;template>
+        &lt;code>
+            console.log("Hello World!");
+        &lt;/code>
+    &lt;/template>
+&lt;/exec-code></pre>
+        <exec-code>
+            <template>
+                <code>
+            console.log("Hello World!");
         </code>
-    </template>
-</exec-code>
+            </template>
+        </exec-code>
+
+        <pre class="documentation">&lt;exec-code autorun></pre>
+        Execute code immediately after display
+        <exec-code autorun>
+            <template>
+                <code>
+            console.log("Hello World!");
+        </code>
+            </template>
+        </exec-code>
+
+        <pre class="documentation">&lt;exec-code autorun autoupdate></pre>
+        Execute code on every user keystroke
+        <exec-code autorun autoupdate>
+            <template>
+                <code>
+                    console.log("Hello World!");
+                </code>
+            </template>
+        </exec-code>
+
+        <pre class="documentation">&lt;exec-code>
+    &lt;template>
+        &lt;code locked></pre>
+        Code can not be edited
+        <exec-code autorun autoupdate>
+            <template>
+                <code locked>
+                    console.log("Hello World!");
+                </code>
+            </template>
+        </exec-code>
+
+    </section>
+
+    <h2>Advanced Attributes</h2>
+    <section>
+        <pre class="documentation">&lt;exec-code htmlindent></pre>
+        Keep original indentation from HTML file
+        <exec-code htmlindent>
+            <template>
+                <code>
+                let beatles = ["John", "Paul", "George", "Ringo"];
+                console.log("All Beatles:", beatles);
+                console.log("Beatle 1 =", beatles[0]);
+                console.log("Beatle 2 =", beatles[1]);
+                console.log("Beatle 3 =", beatles[2]);
+                console.log("Beatle 4 =", beatles[3]);
+                </code>
+            </template>
+        </exec-code>
+    </section>
+</body>
+
+</html>
