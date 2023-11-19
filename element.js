@@ -106,6 +106,7 @@
         setTimeout(() => this.afterinit(), 1000);
       } else {
         console.error("Missing BlogCells");
+        setTimeout(() => this.setscript(txt), 250);
       }
     }
     afterinit() {
