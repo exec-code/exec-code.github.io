@@ -24,7 +24,7 @@
     }
     attributesChangedCallback(name, oldValue, newValue) {
       if (this.hasAttribute("autorun")) this.run();
-      if (this.hasAttribute("autoupdate")) this.onkeyup = () => this.run();
+      if (this.hasAttribute("autoupdate")) this.addkeyup();
       else delete this.onkeyup
       if (this.hasAttribute("runcode")) this.renderCodeBlock(this.runcode);
     }
@@ -59,6 +59,9 @@
           })
         )
       }
+      this.onmessage = (evt) => {
+        console.log("onmessage", evt);
+      }
     }
     get code() {
       if (this.codeElement)
@@ -92,16 +95,33 @@
         .map(line => line
           //.trim()
           .replace("\t", "")
-          //.replace("    ", "")
-          .replace("firstName", "Tijn")
+        //.replace("    ", "")
         ).join("\n");
+    }
+    addkeyup() {
+      // keep track of all keys pressed in keybuffer
+      // otherwise fast entry or deletes will not be processed correctly
+      let keybuffer = [];
+      this.onkeyup = (evt) => {
+        keybuffer.push(evt.key);
+        //console.log("keyup", evt.key, keybuffer);
+        setTimeout(() => {
+          keybuffer.pop();
+          this.run();
+          if (keybuffer.length) {
+            console.warn("keyup buffer not empty", keybuffer);
+            keybuffer = [];
+            setTimeout(() => this.run(), 500);
+          }
+        }, 200);
+      }
     }
     setscript(txt) {
       if (window.BlogCells) {
         let lines = this.extractscript(txt);
         let script = this.appendscript(lines);
         BlogCells.processBlogCell(script);
-        if (this.hasAttribute("autoupdate")) this.onkeyup = () => this.run();
+        if (this.hasAttribute("autoupdate")) this.addkeyup();
         if (this.hasAttribute("autorun")) setTimeout(() => this.run(), 1);
         setTimeout(() => this.afterinit(), 1000);
       } else {
@@ -145,7 +165,7 @@
       if (runbar) {
         clickRunBar();
       } else {
-        console.warn("Missing .run-bar");
+        console.warn("Missing .run-bar; rerun again");
         setTimeout(() => this.run());
       }
     }
