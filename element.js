@@ -65,7 +65,7 @@
     }
     get code() {
       if (this.codeElement)
-        return this.codeElement.innerHTML;
+        return this.codeElement.innerText;
       else return "";
     }
     renderCodeBlock(codenr = 1) {
